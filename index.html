@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JSON &amp; JSON Schema · Aula interativa</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-inner">
+    <span class="brand"><b>JSON</b> &amp; JSON&nbsp;Schema</span>
+    <nav class="navlinks">
+      <a href="#fundamentos">Fundamentos</a>
+      <a href="#sintaxe">Sintaxe</a>
+      <a href="#conversao">Conversão</a>
+      <a href="#schema">JSON Schema</a>
+      <a href="#composicao">Composição</a>
+      <a href="#entregar">Entregar</a>
+      <a href="#sandbox">Sandbox</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Estruturação de dados</div>
+    <h1>JSON <span class="amp">&amp;</span> JSON&nbsp;Schema</h1>
+    <p class="sub">Um formato de texto, seis tipos de valores — e um contrato que o valida. Aprende a <b>estruturar</b>, <b>converter</b> de/para XML e <b>validar</b> com JSON Schema Draft 2020-12, com quizzes e um laboratório que valida mesmo no browser.</p>
+    <div class="chips">
+      <span class="chip"><b>interoperável</b></span>
+      <span class="chip"><b>seis tipos</b> de valores</span>
+      <span class="chip"><b>validável</b></span>
+      <span class="chip"><b>auto-descritivo</b></span>
+    </div>
+    <div class="cta">
+      <a class="btn" href="#sandbox">Abrir o Sandbox</a>
+      <a class="btn-ghost" href="#fundamentos">Começar pela teoria</a>
+    </div>
+    <p class="hero-foot">Tecnologias para o Desenvolvimento Web · 2026/2027 · a partir do teu PDF</p>
+  </div>
+</header>
+
+<main class="wrap">
+<section class="sec" id="fundamentos">
+  <div class="kicker">01 · Fundamentos</div>
+  <h2 class="sec-title">Representar dados com JSON</h2>
+  <p class="lead">Um formato de texto; seis tipos de valores. JSON não traz comportamento — define estrutura e conteúdo, legível por humanos e máquinas.</p>
+
+  <h3 class="sub-h"><span class="dot">●</span> Um sensor, quatro propriedades</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>objeto.json</div>
+<pre class="code-body" data-lang="json">{
+  "id": "AR-007",
+  "pm25": 12.4,
+  "ativo": true,
+  "ultimaFalha": null
+}</pre></div>
+    <div class="caps">
+      <div class="cap teal"><div class="t">{ }</div><p>Objeto delimitado por chavetas.</p></div>
+      <div class="cap"><div class="t">"id"</div><p>Nomes de propriedade entre aspas duplas.</p></div>
+      <div class="cap coral"><div class="t">12.4 · null</div><p><b style="color:#fff">12.4</b> é um número; <b style="color:#fff">null</b> é um valor explícito.</p></div>
+    </div>
+  </div>
+
+  <h3 class="sub-h">JSON é texto, não uma linguagem</h3>
+  <div class="grid c4">
+    <div class="panel"><div class="tag">Intercâmbio</div><h4>Um formato</h4><p>APIs, configuração e eventos podem partilhar o mesmo formato de dados.</p></div>
+    <div class="panel"><div class="tag">Independência</div><h4>Além do JavaScript</h4><p>Deriva da notação de JS, mas é usado por muitas linguagens.</p></div>
+    <div class="panel"><div class="tag">Transporte</div><h4>UTF-8</h4><p>Entre sistemas, usar UTF-8 e <code>application/json</code>.</p></div>
+    <div class="panel"><div class="tag">Dimensão</div><h4>Volume conta</h4><p>Pode ser compacto; volume, compressão e acesso também contam.</p></div>
+  </div>
+
+  <h3 class="sub-h">Seis tipos de valores</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>tipos.json</div>
+<pre class="code-body" data-lang="json">{
+  "texto": "sensor",
+  "numero": 12.4,
+  "booleano": true,
+  "nulo": null,
+  "objeto": {"id": "AR-007"},
+  "array": [12.4, 13.1]
+}</pre></div>
+    <div class="caps">
+      <div class="cap teal"><div class="t">string · number · boolean · null</div><p>Os quatro tipos escalares.</p></div>
+      <div class="cap"><div class="t">object · array</div><p>Agregam outros valores.</p></div>
+      <div class="cap coral"><div class="t">raiz</div><p>Qualquer valor pode ser a raiz: <b style="color:#fff">42</b> e <b style="color:#fff">true</b> também são JSON.</p></div>
+    </div>
+  </div>
+
+  <h3 class="sub-h">Números usam ponto; códigos usam texto</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>numeros.json</div>
+<pre class="code-body" data-lang="json">{
+  "temperatura": -3.5,
+  "potenciaW": 1.2e3,
+  "codigo": "007",
+  "custoCentimos": 595
+}</pre></div>
+    <div class="caps">
+      <div class="cap coral"><div class="t">sem vírgula decimal</div><p>Nada de <code>NaN</code> nem <code>Infinity</code>.</p></div>
+      <div class="cap"><div class="t">"007"</div><p><code>007</code> não é um número JSON válido — fica string.</p></div>
+      <div class="cap teal"><div class="t">dinheiro</div><p>Definir unidade e política de precisão (ex.: cêntimos).</p></div>
+    </div>
+  </div>
+
+  <h3 class="sub-h">Strings, arrays e objetos aninhados</h3>
+  <div class="grid c3">
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>strings</div>
+<pre class="code-body" data-lang="json">{
+  "local": "Viseu",
+  "nota": "Sensor \"Norte\"",
+  "ficheiro": "C:\\dados\\ar.json",
+  "linhas": "a\nb"
+}</pre></div>
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>arrays</div>
+<pre class="code-body" data-lang="json">{
+  "leituras": [12.4, 13.1, 11.8],
+  "grelha": [[2, 5], [21, -5]],
+  "misto": ["AR-007", true, null]
+}</pre></div>
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>aninhado</div>
+<pre class="code-body" data-lang="json">{
+  "sensor": {
+    "id": "AR-007",
+    "local": {"cidade": "Viseu"},
+    "leituras": [
+      {"pm25": 12.4},
+      {"pm25": 13.1}
+    ]
+  }
+}</pre></div>
+  </div>
+  <div class="caps" style="margin-top:16px">
+    <div class="cap"><div class="t">escapes</div><p>Aspas duplas delimitam; a barra invertida introduz escapes. JSON não tem tipo nativo para datas.</p></div>
+    <div class="cap teal"><div class="t">ordem &amp; nomes</div><p>Arrays mantêm a ordem; sem vírgula após o último elemento. Não depender da ordem das propriedades nem repetir nomes.</p></div>
+  </div>
+
+  <h3 class="sub-h">Ausente, null, vazio e zero são diferentes</h3>
+  <div class="grid c4">
+    <div class="panel"><div class="tag">ausente</div><h4 style="font-family:var(--mono)">{}</h4><p>A propriedade não foi enviada. O significado depende do contrato.</p></div>
+    <div class="panel coral"><div class="tag">null</div><h4 style="font-family:var(--mono)">{"pm25": null}</h4><p>Existe, mas não contém medição numérica.</p></div>
+    <div class="panel yellow"><div class="tag">vazio</div><h4 style="font-family:var(--mono)">{"nota": ""}</h4><p>String de comprimento zero.</p></div>
+    <div class="panel"><div class="tag">zero</div><h4 style="font-family:var(--mono)">{"pm25": 0}</h4><p>É um número. Não é ausência de dados.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="sintaxe">
+  <div class="kicker">02 · Sintaxe</div>
+  <h2 class="sec-title">JSON válido: ler antes de confiar</h2>
+  <p class="lead">Sintaxe correta deixa o parser ler o texto — mas não garante que os dados servem à aplicação. Isso é tarefa do JSON Schema.</p>
+
+  <h3 class="sub-h"><span class="dot">●</span> Desafio: encontra os quatro erros de sintaxe</h3>
+  <div class="code"><div class="code-head bad"><span class="lamp"></span>inválido · para diagnóstico</div>
+<pre class="code-body" data-lang="json">{
+  id: "AR-007",
+  "pm25": 12,4,
+  "ativo": True,
+  "zonas": ["norte", "sul",]
+}</pre></div>
+  <p class="note"><b style="color:var(--yellow)">Pista:</b> verifica aspas nos nomes, vírgula vs. ponto decimal, maiúsculas em <code>true</code>, e vírgula final.</p>
+  <div class="exbox">
+    <div class="ex-h"><span class="pin">✎</span> A tua vez — edita até ficar bem formado e carrega em Verificar</div>
+    <div class="edcard" id="ex1-card">
+      <div class="ed"><div class="ed-gutter"><div class="ed-gutter-inner" id="ex1-gut"></div></div>
+<textarea id="ex1-ta" wrap="off" spellcheck="false">{
+  id: "AR-007",
+  "pm25": 12,4,
+  "ativo": True,
+  "zonas": ["norte", "sul",]
+}</textarea></div>
+    </div>
+    <div class="ex-actions"><button class="btn-sm" id="ex1-btn">Verificar</button><button class="btn-sm ghost" id="ex1-rst">Repor</button></div>
+    <div class="ex-fb" id="ex1-fb"></div>
+  </div>
+  <details class="reveal"><summary>Ver a correção</summary><div class="inner">
+    <div class="code" style="margin-top:6px"><div class="code-head ok"><span class="lamp"></span>corrigido.json</div>
+<pre class="code-body" data-lang="json">{
+  "id": "AR-007",
+  "pm25": 12.4,
+  "ativo": true,
+  "zonas": ["norte", "sul"]
+}</pre></div>
+    <ol style="color:var(--muted); font-size:14.5px; margin:6px 0 0; padding-left:20px">
+      <li>Nome sem aspas → <code>"id"</code>.</li>
+      <li>Vírgula decimal → ponto: <code>12.4</code>.</li>
+      <li><code>True</code> maiúsculo → <code>true</code>.</li>
+      <li>Vírgula final removida no array.</li>
+    </ol>
+    <p class="note" style="border-color:var(--teal)">Sintaxe correta <b style="color:#fff">não</b> garante dados adequados à aplicação.</p>
+  </div></details>
+
+  <h3 class="sub-h">Interoperabilidade exige mais do que sintaxe</h3>
+  <div class="grid c4">
+    <div class="panel"><div class="tag">Nomes únicos</div><h4>Sem duplicados</h4><p>Nomes repetidos dão resultados diferentes entre parsers.</p></div>
+    <div class="panel"><div class="tag">Inteiros grandes</div><h4>±(2^53−1)</h4><p>Em JS, <code>Number</code> só garante inteiros exatos até esse limite.</p></div>
+    <div class="panel"><div class="tag">Datas explícitas</div><h4>ISO 8601</h4><p>Strings acordadas, ex.: <code>2026-10-01T09:30:00Z</code>.</p></div>
+    <div class="panel coral"><div class="tag">JSON estrito</div><h4>Nada de //</h4><p>Comentários e vírgulas finais são extensões, não JSON padrão.</p></div>
+  </div>
+
+  <h3 class="sub-h">JSON.parse lê; JSON.stringify serializa</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>javascript</div>
+<pre class="code-body" data-lang="js">const texto = '{"pm25":12.4}';
+const dados = JSON.parse(texto);
+console.log(dados.pm25);          // 12.4
+
+const saida = JSON.stringify(dados);
+console.log(saida);               // {"pm25":12.4}
+
+if (dados.pm25 !== 12.4) {
+  throw new Error("Valor inesperado");
+}</pre></div>
+    <div class="caps">
+      <div class="cap teal"><div class="t">parse</div><p>Produz um valor JavaScript; não valida o contrato.</p></div>
+      <div class="cap"><div class="t">stringify</div><p>Produz texto JSON para valores suportados.</p></div>
+      <div class="cap coral"><div class="t">eval</div><p>Nunca usar <code>eval</code> para ler dados.</p></div>
+    </div>
+  </div>
+</section>
+<section class="sec" id="conversao">
+  <div class="kicker">03 · Conversão</div>
+  <h2 class="sec-title">Converter exige um mapeamento</h2>
+  <p class="lead">JSON e XML não têm modelos de dados equivalentes. A conversão é uma decisão de mapeamento, não uma tradução automática.</p>
+
+  <div class="grid c4">
+    <div class="panel teal"><div class="tag">JSON</div><h4>Tipos &amp; arrays</h4><p>Tipos simples explícitos e arrays nativos. Frequente em APIs de dados.</p></div>
+    <div class="panel"><div class="tag">XML</div><h4>Documentos</h4><p>Elementos, atributos, namespaces e conteúdo misto. Útil em documentos.</p></div>
+    <div class="panel yellow"><div class="tag">Validação</div><h4>Contratos</h4><p>JSON Schema e XSD descrevem contratos, com capacidades diferentes.</p></div>
+    <div class="panel"><div class="tag">Desempenho</div><h4>Medir</h4><p>Tamanho, compressão e processamento; sem vencedor universal.</p></div>
+  </div>
+
+  <h3 class="sub-h">Valores XML precisam de uma decisão de tipo</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>xml</div>
+<pre class="code-body" data-lang="xml">&lt;sensor&gt;
+  &lt;id&gt;AR-007&lt;/id&gt;
+  &lt;pm25&gt;12.4&lt;/pm25&gt;
+  &lt;ativo&gt;true&lt;/ativo&gt;
+&lt;/sensor&gt;</pre></div>
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>json</div>
+<pre class="code-body" data-lang="json">{
+  "sensor": {
+    "id": "AR-007",
+    "pm25": 12.4,
+    "ativo": true
+  }
+}</pre></div>
+  </div>
+  <p class="cap-line">Convenção: <b>preservar a raiz</b>; escolher os tipos com base no contrato, não apenas no texto.</p>
+
+  <h3 class="sub-h">Elementos repetidos tornam-se arrays</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>xml</div>
+<pre class="code-body" data-lang="xml">&lt;rede&gt;
+  &lt;sensor&gt;&lt;id&gt;AR-007&lt;/id&gt;&lt;/sensor&gt;
+  &lt;sensor&gt;&lt;id&gt;AR-008&lt;/id&gt;&lt;/sensor&gt;
+&lt;/rede&gt;</pre></div>
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>json</div>
+<pre class="code-body" data-lang="json">{
+  "rede": {
+    "sensores": [
+      {"id": "AR-007"},
+      {"id": "AR-008"}
+    ]
+  }
+}</pre></div>
+  </div>
+  <p class="cap-line"><code>sensor</code> repetido passa a <b>sensores</b>; manter o array mesmo com um só elemento.</p>
+
+  <h3 class="sub-h">Atributos e texto precisam de nomes distintos</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>xml</div>
+<pre class="code-body" data-lang="xml">&lt;medida unidade="ug/m3"&gt;
+  12.4
+&lt;/medida&gt;</pre></div>
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>json</div>
+<pre class="code-body" data-lang="json">{
+  "medida": {
+    "unidade": "ug/m3",
+    "valor": 12.4
+  }
+}</pre></div>
+  </div>
+  <p class="cap-line"><code>unidade</code> e <code>valor</code> são escolhas deste mapeamento; JSON não define regra universal para atributos.</p>
+
+  <h3 class="sub-h">Uma conversão pode perder informação</h3>
+  <div class="grid c4">
+    <div class="panel"><div class="tag">Atributo ou elemento?</div><p>Uma propriedade JSON não guarda essa distinção.</p></div>
+    <div class="panel"><div class="tag">Namespaces</div><p>Preservar URI e nomes qualificados quando relevam.</p></div>
+    <div class="panel"><div class="tag">Conteúdo misto</div><p>Texto intercalado com elementos exige preservar a sequência.</p></div>
+    <div class="panel coral"><div class="tag">Ida e volta</div><p>Definir regras para raiz, arrays, tipos, null e vazios; testar o retorno.</p></div>
+  </div>
+
+  <h3 class="sub-h"><span class="dot">●</span> Exercício: converte duas leituras para JSON</h3>
+  <div class="code"><div class="code-head plain"><span class="lamp"></span>xml · ponto de partida</div>
+<pre class="code-body" data-lang="xml">&lt;leituras sensor="AR-007"&gt;
+  &lt;leitura&gt;&lt;pm25&gt;12.4&lt;/pm25&gt;&lt;/leitura&gt;
+  &lt;leitura&gt;&lt;pm25&gt;13.1&lt;/pm25&gt;&lt;/leitura&gt;
+&lt;/leituras&gt;</pre></div>
+  <p class="note">Na raiz JSON usa <code>sensor</code> e <code>leituras</code>; cada leitura é um objeto do array; <code>pm25</code> é número.</p>
+  <div class="exbox">
+    <div class="ex-h"><span class="pin">✎</span> Escreve o teu JSON — o esqueleto já está preenchido</div>
+    <div class="edcard" id="ex2-card">
+      <div class="ed"><div class="ed-gutter"><div class="ed-gutter-inner" id="ex2-gut"></div></div>
+<textarea id="ex2-ta" wrap="off" spellcheck="false">{
+  "sensor": "",
+  "leituras": []
+}</textarea></div>
+    </div>
+    <div class="ex-actions"><button class="btn-sm" id="ex2-btn">Verificar</button><button class="btn-sm ghost" id="ex2-rst">Repor</button></div>
+    <div class="ex-fb" id="ex2-fb"></div>
+  </div>
+  <details class="reveal"><summary>Ver a solução</summary><div class="inner">
+    <div class="code" style="margin-top:6px"><div class="code-head ok"><span class="lamp"></span>solução.json</div>
+<pre class="code-body" data-lang="json">{
+  "sensor": "AR-007",
+  "leituras": [
+    {"pm25": 12.4},
+    {"pm25": 13.1}
+  ]
+}</pre></div>
+    <ul style="color:var(--muted); font-size:14.5px; margin:6px 0 0; padding-left:20px">
+      <li><code>sensor</code> provém do atributo XML.</li>
+      <li>A ordem das leituras foi preservada.</li>
+      <li>A raiz <code>leituras</code> do XML não foi preservada — decisão explícita.</li>
+    </ul>
+  </div></details>
+
+  <h3 class="sub-h"><span class="dot">●</span> Exercício: converte um contador para XML</h3>
+  <div class="code"><div class="code-head plain"><span class="lamp"></span>json · ponto de partida</div>
+<pre class="code-body" data-lang="json">{
+  "contador": {
+    "id": "007",
+    "energia": {"unidade": "kWh", "valor": 18.75}
+  }
+}</pre></div>
+  <p class="note">Usa <code>contador</code> como raiz; mapeia <code>id</code> e <code>unidade</code> para atributos; o número é o conteúdo textual de <code>energia</code>.</p>
+  <div class="exbox">
+    <div class="ex-h"><span class="pin">✎</span> Escreve o teu XML</div>
+    <div class="edcard" id="ex3-card">
+      <div class="ed"><div class="ed-gutter"><div class="ed-gutter-inner" id="ex3-gut"></div></div>
+<textarea id="ex3-ta" wrap="off" spellcheck="false" placeholder="&lt;contador id=&quot;...&quot;&gt;&#10;  ...&#10;&lt;/contador&gt;"></textarea></div>
+    </div>
+    <div class="ex-actions"><button class="btn-sm" id="ex3-btn">Verificar</button><button class="btn-sm ghost" id="ex3-rst">Repor</button></div>
+    <div class="ex-fb" id="ex3-fb"></div>
+  </div>
+  <details class="reveal"><summary>Ver a solução</summary><div class="inner">
+    <div class="code" style="margin-top:6px"><div class="code-head ok"><span class="lamp"></span>solução.xml</div>
+<pre class="code-body" data-lang="xml">&lt;contador id="007"&gt;
+  &lt;energia unidade="kWh"&gt;18.75&lt;/energia&gt;
+&lt;/contador&gt;</pre></div>
+    <ul style="color:var(--muted); font-size:14.5px; margin:6px 0 0; padding-left:20px">
+      <li><code>007</code> é um identificador textual.</li>
+      <li>O valor usa ponto decimal.</li>
+      <li>Validar o XML e testar o mapeamento inverso.</li>
+    </ul>
+  </div></details>
+</section>
+
+<section class="sec" id="schema">
+  <div class="kicker">04 · Validação</div>
+  <h2 class="sec-title">Validar com JSON Schema</h2>
+  <p class="lead">Sintaxe legível não basta: é preciso um contrato. O JSON Schema descreve tipos, campos, limites e padrões que os dados têm de cumprir.</p>
+
+  <h3 class="sub-h">Três níveis de verificação</h3>
+  <div class="grid c4">
+    <div class="panel"><div class="tag">1 · Sintaxe</div><p>O parser consegue ler o texto como JSON?</p></div>
+    <div class="panel"><div class="tag">2 · Estrutura</div><p>Tipos, campos e limites cumprem o esquema?</p></div>
+    <div class="panel"><div class="tag">3 · Negócio</div><p>O sensor existe? O utilizador pode enviar esta leitura?</p></div>
+    <div class="panel coral"><div class="tag">Responsabilidades</div><p>O esquema não substitui autorização, base de dados ou regras entre registos.</p></div>
+  </div>
+
+  <h3 class="sub-h">$schema declara o dialeto</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>sensor.schema.json</div>
+<pre class="code-body" data-lang="json">{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/sensor.schema.json",
+  "title": "Sensor de qualidade do ar",
+  "type": "object"
+}</pre></div>
+    <div class="caps">
+      <div class="cap teal"><div class="t">$schema</div><p>Usar um validador compatível com Draft 2020-12. Não precisa de ser a primeira propriedade.</p></div>
+      <div class="cap"><div class="t">$id</div><p>Identifica o esquema; não implica que esteja publicado.</p></div>
+    </div>
+  </div>
+
+  <h3 class="sub-h">properties, required e additionalProperties</h3>
+  <div class="grid c3">
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>properties</div>
+<pre class="code-body" data-lang="json">{
+  "type": "object",
+  "properties": {
+    "id": {"type": "string"},
+    "pm25": {"type": "number"}
+  }
+}</pre></div>
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>required</div>
+<pre class="code-body" data-lang="json">{
+  "type": "object",
+  "properties": {
+    "id": {"type": "string"},
+    "pm25": {"type": "number"}
+  },
+  "required": ["id", "pm25"]
+}</pre></div>
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>additionalProperties</div>
+<pre class="code-body" data-lang="json">{
+  "type": "object",
+  "properties": {"id": {"type": "string"}},
+  "required": ["id"],
+  "additionalProperties": false
+}</pre></div>
+  </div>
+  <div class="caps" style="margin-top:16px">
+    <div class="cap teal"><div class="t">properties</div><p>Valida cada campo <b style="color:#fff">quando está presente</b>. <code>{}</code> é aceite; <code>integer</code> existe em JSON Schema, embora JSON só tenha <code>number</code>.</p></div>
+    <div class="cap"><div class="t">required</div><p>Array de nomes no objeto atual. Um <code>id</code> igual a <code>""</code> ainda é aceite — para recusar, juntar <code>minLength</code>.</p></div>
+    <div class="cap coral"><div class="t">additionalProperties: false</div><p>Por omissão os campos extra são permitidos; <code>false</code> recusa os não declarados.</p></div>
+  </div>
+
+  <h3 class="sub-h">Facetas: strings, números, arrays</h3>
+  <div class="grid c2">
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>string</div>
+<pre class="code-body" data-lang="json">{
+  "type": "string",
+  "minLength": 6,
+  "maxLength": 6,
+  "pattern": "^AR-[0-9]{3}$"
+}</pre></div>
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>format</div>
+<pre class="code-body" data-lang="json">{
+  "type": "string",
+  "format": "date-time"
+}</pre></div>
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>number</div>
+<pre class="code-body" data-lang="json">{
+  "type": "number",
+  "exclusiveMinimum": 0,
+  "maximum": 100,
+  "multipleOf": 0.5
+}</pre></div>
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>array</div>
+<pre class="code-body" data-lang="json">{
+  "type": "array",
+  "items": {"type": "number", "minimum": 0},
+  "minItems": 1,
+  "maxItems": 3,
+  "uniqueItems": true
+}</pre></div>
+  </div>
+  <div class="caps" style="margin-top:16px">
+    <div class="cap"><div class="t">pattern</div><p><code>AR-007</code> é aceite; <code>AR-7</code> é recusado. As âncoras <code>^</code> e <code>$</code> delimitam o padrão.</p></div>
+    <div class="cap teal"><div class="t">format: "date-time"</div><p>Baseia-se no RFC 3339. É <b style="color:#fff">anotação</b> por omissão: ativar a verificação no validador.</p></div>
+    <div class="cap coral"><div class="t">number</div><p><code>0 &lt; valor &lt;= 100</code>, passos de 0.5. <code>minimum</code>/<code>maximum</code> incluem os extremos.</p></div>
+    <div class="cap yellow"><div class="t">array</div><p><code>items</code> aplica-se a todos; <code>uniqueItems</code> compara valores completos. <code>[]</code> e <code>["12.4"]</code> recusados.</p></div>
+  </div>
+
+  <h3 class="sub-h">null vs. ausência · default documenta</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>number ou null</div>
+<pre class="code-body" data-lang="json">{
+  "type": "object",
+  "properties": {
+    "pm25": {"type": ["number", "null"]}
+  },
+  "required": ["pm25"]
+}</pre></div>
+    <div class="caps">
+      <div class="cap teal"><div class="t">["number","null"]</div><p><code>{"pm25": null}</code> é aceite; <code>{}</code> é recusado (falta a propriedade). Não existe palavra-chave <code>nullable</code>.</p></div>
+      <div class="cap"><div class="t">default</div><p>Documenta, não preenche. <code>{}</code> continua <code>{}</code>; o preenchimento exige lógica. <code>title</code>/<code>description</code>/<code>examples</code> são anotações.</p></div>
+    </div>
+  </div>
+
+  <h3 class="sub-h"><span class="dot">●</span> Diagnóstico: JSON válido, contrato violado</h3>
+  <div class="code"><div class="code-head bad"><span class="lamp"></span>bem formado · mas inválido ao contrato</div>
+<pre class="code-body" data-lang="json">{
+  "id": "AR-7",
+  "pm25": "12.4",
+  "zonas": ["norte", "norte"]
+}</pre></div>
+  <p class="note"><code>id</code> deve cumprir <code>^AR-[0-9]{3}$</code>; <code>pm25</code> deve ser number; <code>ativo</code> é obrigatório; <code>zonas</code> sem duplicados. <b style="color:var(--yellow)">Identifica quatro falhas.</b></p>
+  <div class="exbox">
+    <div class="ex-h"><span class="pin">✎</span> Corrige os dados até <b style="color:#fff">passar o contrato</b> — o mesmo validador do sandbox corre aqui</div>
+    <div class="edcard" id="ex4-card">
+      <div class="ed"><div class="ed-gutter"><div class="ed-gutter-inner" id="ex4-gut"></div></div>
+<textarea id="ex4-ta" wrap="off" spellcheck="false">{
+  "id": "AR-7",
+  "pm25": "12.4",
+  "zonas": ["norte", "norte"]
+}</textarea></div>
+    </div>
+    <div class="ex-actions"><button class="btn-sm" id="ex4-btn">Verificar contra o esquema</button><button class="btn-sm ghost" id="ex4-rst">Repor</button></div>
+    <div class="ex-fb" id="ex4-fb"></div>
+  </div>
+  <details class="reveal"><summary>Ver a solução</summary><div class="inner">
+    <div class="code" style="margin-top:6px"><div class="code-head ok"><span class="lamp"></span>corrigido.json</div>
+<pre class="code-body" data-lang="json">{
+  "id": "AR-007",
+  "pm25": 12.4,
+  "ativo": true,
+  "zonas": ["norte"]
+}</pre></div>
+    <ul style="color:var(--muted); font-size:14.5px; margin:6px 0 0; padding-left:20px">
+      <li>Código corrigido para o padrão; medição passou a número.</li>
+      <li><code>ativo</code> acrescentado após confirmar o valor.</li>
+      <li>Duplicado removido — confirmar que a perda de repetição é aceitável.</li>
+      <li>Corrigir os dados, não relaxar as regras.</li>
+    </ul>
+  </div></details>
+</section>
+<section class="sec" id="composicao">
+  <div class="kicker">05 · Composição</div>
+  <h2 class="sec-title">Compor e reutilizar regras</h2>
+  <p class="lead">Alternativas, condições e coleções em Draft 2020-12. Combinar esquemas é combinar condições sobre o mesmo valor.</p>
+
+  <h3 class="sub-h">enum, const · $defs e $ref</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>enum / const</div>
+<pre class="code-body" data-lang="json">{
+  "type": "object",
+  "properties": {
+    "estado": {"enum": ["ativo", "inativo"]},
+    "unidade": {"const": "ug/m3"}
+  },
+  "required": ["estado", "unidade"]
+}</pre></div>
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>$defs / $ref</div>
+<pre class="code-body" data-lang="json">{
+  "$defs": {
+    "codigo": {"type": "string", "pattern": "^AR-[0-9]{3}$"}
+  },
+  "type": "object",
+  "properties": {
+    "origem": {"$ref": "#/$defs/codigo"},
+    "destino": {"$ref": "#/$defs/codigo"}
+  },
+  "required": ["origem", "destino"]
+}</pre></div>
+  </div>
+  <div class="caps" style="margin-top:16px">
+    <div class="cap teal"><div class="t">enum · const</div><p><code>enum</code> aceita um dos valores; <code>const</code> fixa exatamente um. Maiúsculas distinguem strings.</p></div>
+    <div class="cap coral"><div class="t">$defs · $ref</div><p><code>$defs</code> guarda esquemas reutilizáveis; <code>$ref</code> aplica-os onde for referenciado.</p></div>
+  </div>
+
+  <h3 class="sub-h">Combinar esquemas: allOf · anyOf · oneOf · not</h3>
+  <div class="grid c4">
+    <div class="panel"><div class="tag">allOf</div><p>Tem de satisfazer <b style="color:#fff">todos</b> os esquemas.</p></div>
+    <div class="panel"><div class="tag">anyOf</div><p>Tem de satisfazer <b style="color:#fff">pelo menos um</b>.</p></div>
+    <div class="panel coral"><div class="tag">oneOf</div><p>Tem de satisfazer <b style="color:#fff">exatamente um</b>.</p></div>
+    <div class="panel yellow"><div class="tag">not</div><p>Não pode satisfazer o esquema indicado.</p></div>
+  </div>
+
+  <h3 class="sub-h"><span class="dot">●</span> Previsão: <code>oneOf</code> aceita o valor 4?</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>oneOf</div>
+<pre class="code-body" data-lang="json">{
+  "oneOf": [
+    {"type": "integer", "minimum": 0},
+    {"type": "integer", "multipleOf": 2}
+  ]
+}</pre></div>
+    <div class="caps">
+      <div class="cap"><div class="t">conta as alternativas</div><p>Para cada valor, quantas alternativas o aceitam? Testa 3, -2, 4 e -3.</p></div>
+    </div>
+  </div>
+  <details class="reveal"><summary>Ver a solução</summary><div class="inner">
+    <div class="grid c4" style="margin-top:6px">
+      <div class="panel"><div class="tag" style="color:var(--green)">3 · aceite</div><p>Não negativo, mas não múltiplo de 2. Uma alternativa.</p></div>
+      <div class="panel"><div class="tag" style="color:var(--green)">-2 · aceite</div><p>Múltiplo de 2, mas negativo. Uma alternativa.</p></div>
+      <div class="panel"><div class="tag" style="color:var(--red)">4 · recusado</div><p>Cumpre as duas. <code>oneOf</code> exige exatamente uma.</p></div>
+      <div class="panel"><div class="tag" style="color:var(--red)">-3 · recusado</div><p>Não cumpre nenhuma.</p></div>
+    </div>
+    <p class="note" style="border-color:var(--teal)">Com <code>anyOf</code> em vez de <code>oneOf</code>, o <code>4</code> seria <b style="color:#fff">aceite</b> (passa nas duas).</p>
+  </div></details>
+
+  <h3 class="sub-h">not · if/then · fechar depois de compor</h3>
+  <div class="grid c3">
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>not</div>
+<pre class="code-body" data-lang="json">{
+  "type": "string",
+  "not": {"const": "desconhecido"}
+}</pre></div>
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>if / then</div>
+<pre class="code-body" data-lang="json">{
+  "type": "object",
+  "properties": {
+    "ativo": {"type": "boolean"},
+    "instante": {"type": "string"}
+  },
+  "if": {
+    "properties": {"ativo": {"const": true}},
+    "required": ["ativo"]
+  },
+  "then": {"required": ["instante"]}
+}</pre></div>
+    <div class="code" style="margin:0"><div class="code-head plain"><span class="lamp"></span>unevaluatedProperties</div>
+<pre class="code-body" data-lang="json">{
+  "type": "object",
+  "allOf": [
+    {"properties": {"id": {"type": "string"}},
+     "required": ["id"]},
+    {"properties": {"ativo": {"type": "boolean"}},
+     "required": ["ativo"]}
+  ],
+  "unevaluatedProperties": false
+}</pre></div>
+  </div>
+  <div class="caps" style="margin-top:16px">
+    <div class="cap teal"><div class="t">if / then / else</div><p>Se <code>ativo</code> for <code>true</code>, <code>instante</code> passa a obrigatório. <code>required</code> dentro de <code>if</code> evita ativar a condição quando <code>ativo</code> falta.</p></div>
+    <div class="cap coral"><div class="t">unevaluatedProperties</div><p>Considera campos avaliados pelos subesquemas (ex.: dentro de <code>allOf</code>). Disponível desde 2019-09; confirmar suporte.</p></div>
+  </div>
+
+  <h3 class="sub-h">Coleções: prefixItems · contains</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>prefixItems (tupla)</div>
+<pre class="code-body" data-lang="json">{
+  "type": "array",
+  "prefixItems": [
+    {"type": "string"},
+    {"type": "number"}
+  ],
+  "minItems": 2,
+  "items": false
+}</pre></div>
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>contains</div>
+<pre class="code-body" data-lang="json">{
+  "type": "array",
+  "items": {"type": "number"},
+  "contains": {"minimum": 25},
+  "minContains": 1,
+  "maxContains": 2
+}</pre></div>
+  </div>
+  <div class="caps" style="margin-top:16px">
+    <div class="cap"><div class="t">prefixItems</div><p><code>["AR-007", 12.4]</code> é aceite; <code>items: false</code> recusa posições extra. Em 2020-12, não usar array de esquemas em <code>items</code>.</p></div>
+    <div class="cap yellow"><div class="t">contains</div><p>Exige entre 1 e 2 itens <code>&gt;= 25</code>. <code>[12, 30]</code> aceite; <code>[12, 20]</code> recusado. O limiar é didático.</p></div>
+  </div>
+
+  <h3 class="sub-h">Migrar um esquema exige testes</h3>
+  <div class="grid c4">
+    <div class="panel"><div class="tag">Dialeto</div><p>Draft 7, 2019-09 e 2020-12 coexistem. Declarar o usado.</p></div>
+    <div class="panel"><div class="tag">Tuplas</div><p>Em 2020-12 usar <code>prefixItems</code>; rever <code>items</code>/<code>additionalItems</code> antigos.</p></div>
+    <div class="panel"><div class="tag">Reutilização</div><p>Preferir <code>$defs</code>; rever <code>definitions</code> nos antigos.</p></div>
+    <div class="panel teal"><div class="tag">Ferramentas</div><p><code>python-jsonschema</code> suporta 2020-12. Em Ajv, usar a classe <code>Ajv2020</code>.</p></div>
+  </div>
+</section>
+
+<section class="sec" id="entregar">
+  <div class="kicker">06 · Entregar</div>
+  <h2 class="sec-title">Validar, diagnosticar e entregar</h2>
+  <p class="lead">Aplicar o contrato e testar os casos que <b>devem falhar</b>. Uma validação só convence quando os erros aparecem onde se esperam.</p>
+
+  <h3 class="sub-h">Validar explicitamente com Python</h3>
+  <div class="two-up">
+    <div class="code"><div class="code-head plain"><span class="lamp"></span>python</div>
+<pre class="code-body" data-lang="py">from jsonschema import (
+    Draft202012Validator, FormatChecker
+)
+
+Draft202012Validator.check_schema(schema)
+validator = Draft202012Validator(
+    schema, format_checker=FormatChecker()
+)
+validator.validate(dados)</pre></div>
+    <div class="caps">
+      <div class="cap teal"><div class="t">check_schema vs. validate</div><p><code>check_schema</code> valida o esquema; <code>validate</code> valida os dados.</p></div>
+      <div class="cap"><div class="t">formatos</div><p>Instalar <code>jsonschema[format]</code> e ativar o <code>FormatChecker</code>.</p></div>
+    </div>
+  </div>
+
+  <h3 class="sub-h">Ler um erro: localização, regra e correção</h3>
+  <div class="grid c4">
+    <div class="panel coral"><div class="tag">Tipo incorreto</div><p>Caminho <code>pm25</code>, regra <code>type</code>. Enviar <code>12.4</code>, não <code>"12.4"</code>.</p></div>
+    <div class="panel"><div class="tag">Campo em falta</div><p>Regra <code>required</code>. Identificar a propriedade ausente.</p></div>
+    <div class="panel"><div class="tag">Fora do contrato</div><p>Consultar <code>minimum</code>/<code>maximum</code>/<code>pattern</code>/<code>enum</code>.</p></div>
+    <div class="panel"><div class="tag">Coleção inválida</div><p>Verificar <code>items</code>, tamanho e duplicados.</p></div>
+  </div>
+
+  <h3 class="sub-h">Validar na fronteira de confiança</h3>
+  <div class="grid c4">
+    <div class="panel"><div class="tag">Receção</div><p>Limitar tamanho e profundidade; tratar falhas de parsing e validação.</p></div>
+    <div class="panel"><div class="tag">Segurança</div><p>Validar também no servidor. Esquema ≠ autorização.</p></div>
+    <div class="panel"><div class="tag">Privacidade</div><p>Evitar dados pessoais em validadores públicos e mensagens de erro.</p></div>
+    <div class="panel coral"><div class="tag">Referências</div><p>Controlar esquemas externos e versões; evitar resolver URLs arbitrárias.</p></div>
+  </div>
+
+  <h3 class="sub-h"><span class="dot">●</span> Desafio final: modelar um contador de energia</h3>
+  <div class="grid c4">
+    <div class="panel teal"><div class="tag">Obrigatórios</div><p><code>id: EN-042</code>; <code>energiaKwh</code> não negativa; <code>instante</code> date-time.</p></div>
+    <div class="panel"><div class="tag">Opcional</div><p><code>estado</code> aceita apenas <code>ativo</code> ou <code>inativo</code>. Recusar campos extra.</p></div>
+    <div class="panel"><div class="tag">Ficheiros</div><p>Entregar <code>contador.json</code> e <code>contador.schema.json</code> em Draft 2020-12.</p></div>
+    <div class="panel coral"><div class="tag">Evidência</div><p>Testar 1 caso válido e 4 inválidos; explicar cada falha.</p></div>
+  </div>
+  <details class="reveal"><summary>Ver a solução completa (dados + esquema + testes)</summary><div class="inner">
+    <div class="two-up" style="margin-top:6px">
+      <div class="code"><div class="code-head ok"><span class="lamp"></span>contador.json</div>
+<pre class="code-body" data-lang="json">{
+  "id": "EN-042",
+  "energiaKwh": 18.75,
+  "instante": "2026-10-01T09:30:00Z",
+  "estado": "ativo"
+}</pre></div>
+      <div class="code"><div class="code-head plain"><span class="lamp"></span>contador.schema.json</div>
+<pre class="code-body" data-lang="json">{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "id": {"type": "string", "pattern": "^EN-[0-9]{3}$"},
+    "energiaKwh": {"type": "number", "minimum": 0},
+    "instante": {"type": "string", "format": "date-time"},
+    "estado": {"enum": ["ativo", "inativo"]}
+  },
+  "required": ["id", "energiaKwh", "instante"],
+  "additionalProperties": false
+}</pre></div>
+    </div>
+    <div class="grid c4" style="margin-top:4px">
+      <div class="panel"><div class="tag" style="color:var(--red)">type</div><p><code>energiaKwh: "18.75"</code> → falha <code>type</code>.</p></div>
+      <div class="panel"><div class="tag" style="color:var(--red)">required</div><p>Remover <code>id</code> → falha <code>required</code>.</p></div>
+      <div class="panel"><div class="tag" style="color:var(--red)">minimum</div><p><code>energiaKwh: -1</code> → falha <code>minimum</code>.</p></div>
+      <div class="panel"><div class="tag" style="color:var(--red)">additionalProperties</div><p>Juntar <code>debug: true</code> → falha.</p></div>
+    </div>
+    <p class="note" style="border-color:var(--teal)">Carrega este par no <a href="#sandbox">Sandbox</a> (botão <b style="color:#fff">Contador EN-042</b>) e experimenta cada falha.</p>
+  </div></details>
+</section>
+<section class="sec" id="sandbox">
+  <div class="kicker">07 · Laboratório</div>
+  <h2 class="sec-title">Sandbox: valida o teu JSON contra o esquema</h2>
+  <p class="lead">Escreve (ou carrega um exemplo), carrega em <b>Validar</b> e vê o resultado. O validador corre no browser e cobre o essencial de JSON Schema Draft 2020-12: tipos, <code>required</code>, <code>additionalProperties</code>, facetas (padrão, enum, limites, tamanho), <code>format</code>, <code>$defs/$ref</code>, <code>allOf/anyOf/oneOf/not</code>, <code>if/then/else</code>, <code>prefixItems</code> e <code>contains</code>.</p>
+
+  <div class="lab-head" id="exBtns"><span style="color:var(--muted); font-size:13px; margin-right:4px">Exemplos:</span></div>
+
+  <p class="lead" style="margin-top:10px; font-size:14.5px"><b style="color:var(--teal)">Verificação ao vivo:</b> à medida que escreves, o laboratório valida e marca a <b>linha</b> do erro na margem (a vermelho). Também podes carregar em <b>Validar</b> a qualquer momento.</p>
+
+  <div class="editors">
+    <div class="edcard" id="docCard">
+      <div class="ed-cap"><span class="lamp"></span>documento.json
+        <span class="live-note"><span class="live-dot" id="docDot"></span><span id="docLive">—</span></span>
+      </div>
+      <div class="ed"><div class="ed-gutter"><div class="ed-gutter-inner" id="docGut"></div></div>
+        <textarea id="docIn" wrap="off" spellcheck="false"></textarea></div>
+    </div>
+    <div class="edcard" id="schCard">
+      <div class="ed-cap"><span class="lamp"></span>esquema.schema.json
+        <span class="live-note"><span class="live-dot" id="schDot"></span><span id="schLive">—</span></span>
+      </div>
+      <div class="ed"><div class="ed-gutter"><div class="ed-gutter-inner" id="schGut"></div></div>
+        <textarea id="schemaIn" wrap="off" spellcheck="false"></textarea></div>
+    </div>
+  </div>
+
+  <div class="lab-actions">
+    <button class="btn" id="runBtn">▶ Validar</button>
+    <button class="btn-ghost" id="clearBtn">Limpar</button>
+    <label class="fmt-toggle"><input type="checkbox" id="fmtChk" checked> verificar <code>format</code> (date-time)</label>
+  </div>
+
+  <div class="steps" id="steps">
+    <div class="step" data-step="1"><div class="ic">1</div><div><div class="s-t">Sintaxe do documento</div><div class="s-d">O texto é JSON bem formado?</div></div></div>
+    <div class="step" data-step="2"><div class="ic">2</div><div><div class="s-t">Esquema bem formado</div><div class="s-d">O JSON Schema é JSON válido e utilizável?</div></div></div>
+    <div class="step" data-step="3"><div class="ic">3</div><div><div class="s-t">Documento cumpre o contrato</div><div class="s-d">Os dados respeitam o esquema?</div></div></div>
+  </div>
+
+  <div class="result" id="result">
+    <h4 id="resultTitle"></h4>
+    <ul class="errlist" id="errlist"></ul>
+  </div>
+</section>
+
+<section class="sec" id="quiz">
+  <div class="kicker">08 · Consolidar</div>
+  <h2 class="sec-title">Quiz: põe à prova o que percebeste</h2>
+  <p class="lead">Clica numa opção para responder — recebes logo o feedback e a explicação. Três perguntas de cada vez.</p>
+
+  <div class="quizbox">
+    <div class="quiz-top">
+      <span style="color:var(--muted); font-size:13px" id="quizProgress">Perguntas 1–3</span>
+      <span class="quiz-score" id="quizScore">0 / 0</span>
+    </div>
+    <div id="quizMount"></div>
+    <div class="quiz-actions">
+      <button class="btn-ghost" id="quizRestart">Recomeçar</button>
+      <button class="btn" id="quizMore">Mais perguntas</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Construído a partir do teu PDF · JSON &amp; JSON Schema · TDW 2026/2027</p>
+    <div class="src-list">
+      <a href="https://www.rfc-editor.org/rfc/rfc8259" target="_blank" rel="noopener"><b>JSON · RFC 8259</b> — rfc-editor.org</a>
+      <a href="https://json-schema.org/draft/2020-12" target="_blank" rel="noopener"><b>JSON Schema · Draft 2020-12</b> — json-schema.org</a>
+      <a href="https://json-schema.org/understanding-json-schema/reference" target="_blank" rel="noopener"><b>Referência das palavras-chave</b> — understanding-json-schema</a>
+      <a href="https://python-jsonschema.readthedocs.io/en/stable/validate/" target="_blank" rel="noopener"><b>python-jsonschema · Validação</b></a>
+      <a href="https://ajv.js.org/json-schema.html" target="_blank" rel="noopener"><b>Ajv · Versões de JSON Schema</b></a>
+    </div>
+  </div>
+</footer>
+<div class="dlbar">
+  <span class="dlbar-t">⬇ Descarregar projeto</span>
+  <a class="dlbtn zip" id="dlZip" href="#">⬇ tudo (.zip)</a>
+  <a class="dlbtn" data-file="index.html" href="index.html" download="index.html">index.html</a>
+  <a class="dlbtn" data-file="style.css" href="style.css" download="style.css">style.css</a>
+  <a class="dlbtn" data-file="app.js" href="app.js" download="app.js">app.js</a>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
